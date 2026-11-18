@@ -4,7 +4,10 @@
   "description": "A hands-on Node.js learning repository",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "check:version": "node --version",
+    "start": "node day1/runtime.js",
+    "dev": "node --watch"
   },
   "repository": {
     "type": "git",
