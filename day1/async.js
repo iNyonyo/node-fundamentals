@@ -68,18 +68,34 @@ async function readFiles() {
 readFiles();
 
 // day1/07-async.js (export these)
-// function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
+function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 
-// async function retry(fn, { attempts = 3, delayMs = 500 } = {}) {
-//  // TODO (you): call fn(); if it throws, wait delayMs and try again,
-//  // up to `attempts` times in total. Re-throw the last error if all fail.
-// }
+async function retry(fn, { attempts = 3, delayMs = 500 } = {}) {
+ // TODO (you): call fn(); if it throws, wait delayMs and try again,
+ // up to `attempts` times in total. Re-throw the last error if all fail.
 
-// function withTimeout(promise, ms) {
-//  // TODO (you): use Promise.race to reject with new Error('Timed out')
-//  // if promise does not settle within ms.
-// }
-// module.exports = { sleep, retry, withTimeout };
+    for (let i = 0; i < attempts; i++) {
+        try{
+            return await fn();
+        } catch (error) {
+            if (i === attempts-1) {
+                throw error;
+            } else {
+                await sleep(delayMs);
+            }
+        }
+    }
+}
+
+function withTimeout(promise, ms) {
+ // TODO (you): use Promise.race to reject with new Error('Timed out')
+ // if promise does not settle within ms.
+    const newPromise = new Promise((reject) => setTimeout(() => {reject(new Error('Timed out'))}, ms));
+
+    return Promise.race([promise, newPromise]);
+}
+
+module.exports = { sleep, retry, withTimeout };
 
 // Predicted
 /*
